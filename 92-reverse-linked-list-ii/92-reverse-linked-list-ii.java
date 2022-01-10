@@ -9,29 +9,26 @@
  * }
  */
 class Solution {
-    public ListNode reverseBetween(ListNode head, int left, int right) {
-        ListNode fakeHead = new ListNode(-1);
-        fakeHead.next = head;
-        ListNode prev = fakeHead;
-        ListNode curr = fakeHead.next;
-         int i=1;
-      while(i<left){
-          prev = curr;
-          curr = curr.next;
-          i++;
-      }
-      
-      ListNode node = prev;
-          while(i<=right){
-        ListNode next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
-        i++;
-    }
-         node.next.next = curr;
-        node.next = prev;
+    public ListNode reverseBetween(ListNode head, int start, int end) {
+        if(head==null || start==end)
+            return head;
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode nodebeforesublist=dummy;
+        int pos=1;
+        while(pos<start){
+            nodebeforesublist=nodebeforesublist.next;
+            pos++;
+        }
+        ListNode workingpointer=nodebeforesublist.next;
+        while(start<end){
+            ListNode nodetobextracted=workingpointer.next;
+            workingpointer.next=nodetobextracted.next;
+            nodetobextracted.next=nodebeforesublist.next;
+            nodebeforesublist.next=nodetobextracted;
+            start++;
+        }
         
-        return fakeHead.next;
+        return dummy.next;
     }
 }
